@@ -116,8 +116,9 @@ public class Page implements Serializable {
 //        String pb2 = JSONObject.toJSONString(obj);
 //        JSONArray keywords = new JSONArray(obj);
         json.put("keywords", keywords);
-        JSONArray cl = new JSONArray(childLinks);
-        json.put("childLinks", cl);
+        HashSet<String> childSet = new HashSet<String>();
+        childSet.addAll(childLinks);
+        json.put("childLinks", childSet);
         JSONArray pl = new JSONArray(parentLinks);
         json.put("parentLinks", pl);
 //        JSONObject posting = new JSONObject(termFrequency);

@@ -44,7 +44,7 @@ public class SearchEngine {
                     double tf = pos.freq;
                     double idf = Math.log((double)pagesDB.itemCount / df) / Math.log(2);
                     double weight = (tf/max_tf) * idf;
-                    double titleBonus = 0.0;
+                    double titleBonus = 0.2;
                     Page page = pagesDB.getPage(pagesDB.getURL(pos.doc));
                     Vector<String> pageTitle = page.getPageTitle();
                     System.out.println("pageTitle = " + pageTitle);
@@ -57,7 +57,7 @@ public class SearchEngine {
                             System.out.println("BONUS ADDED");
                         }
                     }
-                    weight+=bonusCounter*0.2;
+                    weight+=bonusCounter*titleBonus;
                     double dotWeight = 0.0;
                     if(wordsDB.getID(word)!=null){
                         dotWeight = weight * queryScores.get(wordsDB.getID(word));
@@ -67,6 +67,14 @@ public class SearchEngine {
                     } else {
                         double currentWeight = totScores.get(pos.doc);
                         totScores.put(pos.doc, currentWeight + dotWeight);
+                    }
+
+                    if(pos.doc==103){
+                        System.out.println("tf = " + tf);
+                        System.out.println("idf = " + idf);
+                        System.out.println("weight = " + weight);
+                        System.out.println("dotWeight = " + dotWeight);
+                        System.out.println("queryScores.get(wordsDB.getID(word)) = " + queryScores.get(wordsDB.getID(word)));
                     }
                 }
                 System.out.println();
@@ -90,6 +98,12 @@ public class SearchEngine {
                 Double queryLength = Math.sqrt(query.size());
 
                 Double cosSim = totScores.get(pageID) / (documentLength * queryLength);
+
+                if(pageID==103){
+                    System.out.println("cosSim = " + cosSim);
+                    System.out.println("documentLength = " + documentLength);
+                    System.out.println("queryLength = " + queryLength);
+                }
 
                 totScores.put(pageID, cosSim);
 

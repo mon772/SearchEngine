@@ -138,12 +138,18 @@ public class Index {
             System.out.println("_query = " + query);
 
             //Submit Query
-            HashMap<Integer, Double> sortedResults = SearchEngine.searchQuery(query, wordsDB, urlDB);
+            HashMap<Integer, Double> sortedResults = new HashMap<>();
+
+            if(_query.startsWith("\"" ) && _query.endsWith("\"")){
+                sortedResults = SearchEngine.searchPhrase(query, wordsDB, urlDB);
+            } else {
+                sortedResults = SearchEngine.searchQuery(query, wordsDB, urlDB);
+            }
             //            HashMap<Integer,Double> sortedResults = SearchEngine.searchPhrase(query, wordsDB, urlDB);
             int counter = 0;
             for (Integer pageID : sortedResults.keySet()) {
                 if (counter >=50){
-                    break;
+                    continue;
                 }
                 System.out.println(urlDB.getURL(pageID) + "     SCORE: " + sortedResults.get(pageID));
                 JSONObject pageObj = urlDB.getPage(urlDB.getURL(pageID)).getJSON(wordsDB);

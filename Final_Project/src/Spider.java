@@ -112,29 +112,37 @@ public class Spider
     }
 
     public String extractRawPageTitle(String _url) throws Exception{
-        InputStream urlStream = new URL(_url).openStream();
-        Scanner sc = new Scanner(urlStream);
         String pageTitle = "No Title";
-        if(sc.hasNext()){
-            String responseBody = sc.useDelimiter("\\A").next();
-            pageTitle = responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
-            if (pageTitle.equals("")){
-                pageTitle = "No Title";
+        try {
+            InputStream urlStream = new URL(_url).openStream();
+            Scanner sc = new Scanner(urlStream);
+            if (sc.hasNext()) {
+                String responseBody = sc.useDelimiter("\\A").next();
+                pageTitle = responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
+                if (pageTitle.equals("")) {
+                    pageTitle = "No Title";
+                }
             }
+        } catch (Exception e) {
+            pageTitle = "No Title";
         }
         return pageTitle;
     }
 
     public Vector<String> extractPageTitle(String _url) throws Exception{
-        InputStream urlStream = new URL(_url).openStream();
-        Scanner sc = new Scanner(urlStream);
         String pageTitle = "No Title";
-        if(sc.hasNext()){
-            String responseBody = sc.useDelimiter("\\A").next();
-            pageTitle = responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
-            if (pageTitle.equals("")){
-                pageTitle = "No Title";
+        try{
+            InputStream urlStream = new URL(_url).openStream();
+            Scanner sc = new Scanner(urlStream);
+            if(sc.hasNext()){
+                String responseBody = sc.useDelimiter("\\A").next();
+                pageTitle = responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>"));
+                if (pageTitle.equals("")){
+                    pageTitle = "No Title";
+                }
             }
+        } catch (Exception e) {
+            pageTitle = "No Title";
         }
 
         Vector<String> words = new Vector<String>(List.of(pageTitle.split(" ")));
